@@ -1,0 +1,59 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        Queue<int[]> rotten = new LinkedList<>();
+        int n = grid.length;
+        int m = grid[0].length;
+        boolean[][] isRotten = new boolean[n][m];
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 2){
+                    rotten.add(new int[]{i,j});
+                    isRotten[i][j] = true;
+                }
+            }
+        }
+
+       
+        int ans = bfs(rotten,isRotten, grid);
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] == 1 && !isRotten[i][j]){
+                    return -1;
+                }
+            }
+        }
+        return ans==0?0:ans-1;
+
+        
+    }
+
+    int bfs(Queue<int[]> rotten,boolean[][] isRotten,int[][] grid){
+            if(rotten.size() == 0)return 0;
+            int ans = 0;
+            
+           while(!rotten.isEmpty()){
+                int s = rotten.size();
+                ans++;
+            for(int k=0; k<s; k++){
+                    
+                    int[] dx = {0,0,1,-1};
+                    int[] dy = {1,-1,0,0};
+                    for(int i=0; i<4; i++){
+                        int r = rotten.peek()[0] + dx[i];
+                        int c = rotten.peek()[1] + dy[i];
+                        if(r < grid.length && r >= 0 
+                        && c < grid[0].length && c >= 0 
+                        && !isRotten[r][c] && grid[r][c] == 1){
+                            isRotten[r][c] = true;
+                            rotten.add(new int[]{r,c});
+
+                        }
+                    }
+                rotten.poll();
+            }
+        }
+        return ans;
+    }
+}
