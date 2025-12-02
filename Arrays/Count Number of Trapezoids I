@@ -1,0 +1,50 @@
+class Solution {
+    public int countTrapezoids(int[][] points) {
+        Arrays.sort(points, (a,b)->a[0]-b[0]);
+        int mod = 1000000007;
+        HashMap<Integer,Integer> ys  = new HashMap<>();
+        int t=0; int max = 0;
+        for(int[] arr: points){
+           ys.put(arr[1], ys.getOrDefault(arr[1],0)+1);
+           if(ys.get(arr[1]) == 2)t++;
+           max = Math.max(max,ys.get(arr[1]));
+        }
+
+        if(t<2)return 0;
+        int sum[] = new int[max+1];
+        
+        sum[2] = 1;
+        for(int i=3; i<=max; i++){
+            int temp = sum[i-1];
+            sum[i] = (temp+i-1)%mod;
+        }
+        // for(int i=0; i<sum.length; i++){
+        //     System.out.print(sum[i]+" ,");
+        // }
+       
+        int ans = 0;
+        TreeSet<Integer> set =new TreeSet<>(ys.keySet());
+         int totle=0;
+        for(Integer j: set){
+                if(ys.get(j)<2 )continue;
+                totle += sum[ys.get(j)];
+            }
+       //System.out.println(totle);
+        for(Integer i: set){
+            if(ys.get(i)<2 )continue;
+            totle -= sum[ys.get(i)];
+            ans += (sum[ys.get(i)]*totle)%mod;
+            
+            //System.out.println(i + " =" + ys.get(i) + " ans ="+ ans);
+        }
+
+        // System.out.println(ans);
+       
+       
+        
+
+        
+       
+        return ans;
+    }
+}
