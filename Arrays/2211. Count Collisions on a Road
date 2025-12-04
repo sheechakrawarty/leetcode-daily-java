@@ -1,0 +1,35 @@
+class Solution {
+    public int countCollisions(String directions) {
+        
+        int ans = 0;
+        char last = directions.charAt(0);
+        int r = directions.charAt(0)=='R'?1:0;
+        for(int i=1; i<directions.length(); i++){
+           char ch = directions.charAt(i);
+            
+            if(ch == 'S'){
+                ans += r;
+                last = ch;
+                r=0;
+            }
+            else if(ch == 'L'){
+               if(last == 'L')continue;
+               else if(last == 'R'){
+                ans += r;
+               }
+               ans++;
+                last = 'S';
+                r=0;
+            }
+            else{
+                r++;
+                last = ch;
+            }
+
+            //System.out.println(ch + " -" + ans+ ": "+r);
+            
+        }
+
+        return ans;
+    }
+}
